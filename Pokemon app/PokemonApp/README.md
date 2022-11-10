@@ -1,6 +1,6 @@
-# Swift-MVVM-Clima
+# Swift-MVVM-Pokemons
 
-Está aplicação recebe e trata informação de uma api (https://pokeapi.co/) que retorna dados de clima. 
+Está aplicação recebe e trata informação de uma api (https://pokeapi.co/) que retorna dados de pokemon. 
 
  ## Desenvolvimento
 
