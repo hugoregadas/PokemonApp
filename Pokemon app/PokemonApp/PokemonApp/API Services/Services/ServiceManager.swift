@@ -58,7 +58,7 @@ extension ServiceManager {
                 return
             }
             
-            let x = String(data: data, encoding: .utf8)
+            //let x = String(data: data, encoding: .utf8)
         
             do {
                 let pokedex = try JSONDecoder().decode(PokedexOutput.self, from: data)

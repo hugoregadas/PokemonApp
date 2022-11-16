@@ -1,5 +1,5 @@
 //
-//  PokedexController.swift
+//  PokedexListController.swift
 //  PokemonApp
 //
 //  Created by Hugo Regadas on 10/11/2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class PokedexController: UIViewController {
+class PokedexListController: UIViewController {
     //MARK: - IBOutlet
     @IBOutlet var tableView : UITableView!
     @IBOutlet var titleLabel: UILabel!
     
     //MARK: - Private properties
-    private let viewModel = PokedexViewModel(serviceAPi: ServiceManager.shared)
+    private let viewModel = PokedexListViewModel(serviceAPi: ServiceManager.shared)
     
     //MARK: - life cycle
     override func viewDidLoad() {
@@ -23,7 +23,7 @@ class PokedexController: UIViewController {
 }
 
 //MARK: - private methods
-private extension PokedexController {
+private extension PokedexListController {
     func initUI(){
         tableView.dataSource = self
         titleLabel.text = viewModel.pokedexTitle
@@ -48,7 +48,7 @@ private extension PokedexController {
 }
 
 //MARK: - TableView Data Source e Delegate
-extension PokedexController : UITableViewDataSource {
+extension PokedexListController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = viewModel.fetchPokedexName(with: indexPath.row)

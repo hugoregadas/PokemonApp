@@ -7,10 +7,10 @@
 
 import Foundation
 
-class PokedexViewModel {
+class PokedexListViewModel {
     //MARK: - Public Properties
     var numberOfPokedex = 0
-    let pokedexTitle = "Pokémon - Pokedex"
+    let pokedexTitle = "Pokémon\r All - Pokedex"
     
     //MARK: Private properties
     private var serviceAPi: ServiceManager
@@ -26,14 +26,14 @@ class PokedexViewModel {
 }
 
 //MARK: - private methods
-private extension PokedexViewModel {
+private extension PokedexListViewModel {
     func saveList(With list: [PokedexOutputList]) {
         self.list = list
     }
 }
 
 //MARK: - Public Methods
-extension PokedexViewModel {
+extension PokedexListViewModel {
     func fetchAllPokedex(completion :@escaping (Bool, Error?)->(Void)){
         serviceAPi.fetchPokedex { result in
             switch result {
