@@ -26,6 +26,7 @@ class PokedexListController: UIViewController {
 private extension PokedexListController {
     func initUI(){
         tableView.dataSource = self
+        tableView.delegate = self
         titleLabel.text = viewModel.pokedexTitle
         fetchAllPokedex()
     }
@@ -48,7 +49,7 @@ private extension PokedexListController {
 }
 
 //MARK: - TableView Data Source e Delegate
-extension PokedexListController : UITableViewDataSource {
+extension PokedexListController : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = viewModel.fetchPokedexName(with: indexPath.row)
@@ -58,6 +59,10 @@ extension PokedexListController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfPokedex
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "PokedexSegue", sender: self)
     }
 }
 

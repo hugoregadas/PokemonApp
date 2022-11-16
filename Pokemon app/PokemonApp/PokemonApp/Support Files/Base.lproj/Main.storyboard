@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -55,11 +56,59 @@
                     <connections>
                         <outlet property="tableView" destination="8Wb-ML-lhc" id="XO0-F8-Jaf"/>
                         <outlet property="titleLabel" destination="MoZ-6a-rGG" id="67Z-sD-loM"/>
+                        <segue destination="ze6-Ls-h2f" kind="show" identifier="PokedexSegue" id="ZoH-Z4-88K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="69" y="4"/>
+        </scene>
+        <!--Pokedex View Controller-->
+        <scene sceneID="hr2-Jt-cdx">
+            <objects>
+                <viewController id="ze6-Ls-h2f" customClass="PokedexViewController" customModule="PokemonApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xa2-pm-oeD">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="787"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="370" placeholderIntrinsicHeight="20" text="Pokedex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oDN-dL-Uec">
+                                <rect key="frame" x="10" y="57" width="370" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ExU-wq-CzY">
+                                <rect key="frame" x="0.0" y="97" width="390" height="690"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="JVf-DJ-oSv">
+                                    <size key="itemSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vb8-eT-ViP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="oDN-dL-Uec" firstAttribute="top" secondItem="vb8-eT-ViP" secondAttribute="top" constant="10" id="BpF-lW-1UG"/>
+                            <constraint firstItem="ExU-wq-CzY" firstAttribute="top" secondItem="oDN-dL-Uec" secondAttribute="bottom" constant="20" id="BqQ-ta-dUI"/>
+                            <constraint firstItem="ExU-wq-CzY" firstAttribute="leading" secondItem="vb8-eT-ViP" secondAttribute="leading" id="D8Z-x2-j3j"/>
+                            <constraint firstItem="vb8-eT-ViP" firstAttribute="trailing" secondItem="oDN-dL-Uec" secondAttribute="trailing" constant="10" id="HWl-P0-dad"/>
+                            <constraint firstItem="vb8-eT-ViP" firstAttribute="bottom" secondItem="ExU-wq-CzY" secondAttribute="bottom" id="LXO-2V-rGW"/>
+                            <constraint firstItem="vb8-eT-ViP" firstAttribute="trailing" secondItem="ExU-wq-CzY" secondAttribute="trailing" id="Ld7-wb-msv"/>
+                            <constraint firstItem="oDN-dL-Uec" firstAttribute="leading" secondItem="vb8-eT-ViP" secondAttribute="leading" constant="10" id="mHs-mF-uIG"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="US0-S2-mJx"/>
+                    <connections>
+                        <outlet property="collectionView" destination="ExU-wq-CzY" id="d2D-r4-fPE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xUe-3M-InC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="823" y="4"/>
         </scene>
     </scenes>
     <resources>
@@ -69,5 +118,8 @@
         <namedColor name="backgroundColor">
             <color red="0.43000000715255737" green="0.73199999332427979" blue="0.8529999852180481" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
