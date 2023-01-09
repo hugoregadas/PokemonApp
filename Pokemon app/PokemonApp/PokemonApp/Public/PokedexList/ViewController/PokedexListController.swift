@@ -62,7 +62,17 @@ extension PokedexListController : UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "PokedexSegue", sender: self)
+        viewModel.selectPokedex(in: indexPath.row)
+        
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let vc = storyBoard.instantiateViewController(identifier: "PokedexViewController",
+                                                            creator: { aDecoder in
+            return PokedexViewController(viewModel: self.viewModel.initializePokedexViewModel(), coder: aDecoder)
+        })
+        
+        
+        navigationController?.present(vc, animated: true)
     }
 }
 

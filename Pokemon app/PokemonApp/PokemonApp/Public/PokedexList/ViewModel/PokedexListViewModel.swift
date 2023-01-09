@@ -13,6 +13,7 @@ class PokedexListViewModel {
     let pokedexTitle = "Pokémon\r All - Pokedex"
     
     //MARK: Private properties
+    private var pokedexObject : PokedexOutputList?
     private var serviceAPi: ServiceManager
     private var list: [PokedexOutputList] = [] {
         willSet {
@@ -51,4 +52,16 @@ extension PokedexListViewModel {
     func fetchPokedexName(with row: Int) -> String{
         return "\(row + 1) : " + list[row].name
     }
+    
+    func selectPokedex(in row: Int){
+        pokedexObject = list[row]
+    }
+}
+
+//MARK: - Configure PokedexViewModel
+extension PokedexListViewModel{
+    func initializePokedexViewModel() -> PokedexViewModel{
+        return PokedexViewModel(serviceAPI: self.serviceAPi, pokedexSelected: pokedexObject!)
+    }
+    
 }
