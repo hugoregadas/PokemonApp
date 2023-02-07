@@ -10,52 +10,76 @@ import Foundation
 class PokedexViewModel{
     //MARK: - Private
     private var serviceAPI: ServiceManager
-    private var pokedexSelected : PokedexOutputList
-    private var allPokemons : PokedexObjectOutput?
-    
-    init(serviceAPI: ServiceManager, pokedexSelected : PokedexOutputList) {
+    private var allPokemonListCell: [PokemonCellViewModel] = []
+    private var allPokemonListCellFilter : [PokemonCellViewModel] = []
+
+    //MARK: - Public
+    var isFilter = false
+
+    init(serviceAPI: ServiceManager) {
         self.serviceAPI = serviceAPI
-        self.pokedexSelected = pokedexSelected
     }
 }
 
 //MARK: - Public Methods
 extension PokedexViewModel {
-    func fetchPokedexInfo(completion: @escaping ()->(Void)) {
-        serviceAPI.fetchPokedexInfo(with: pokedexSelected.url) { result in
+    func fetchPokemonList(completion: @escaping ()->(Void)) {
+        serviceAPI.fetchPokemonList("", completion: { [self] result in
             switch result {
-            case .success(let pokedex):
-                self.allPokemons = pokedex
+            case .success(let pokemonList):
+                createPokemonViewModel(newResults: pokemonList) {
+                    completion()
+                }
+                break
+            case .failure(_):
                 completion()
                 break
-            case .failure(let error):
-                NSLog(error.localizedDescription)
+            }
+        })
+    }
+    
+    func fetchPokemon(with name : String , completion: @escaping ()-> (Void)){
+        allPokemonListCellFilter = []
+        serviceAPI.fetchPokemonAllDetailsWith(pokemonName: name) { result in
+            switch result {
+            case .success(let success):
+                let model = PokemonCellViewModel(urlPokemon:"", isFilter: true, pokemon: success)
+                self.allPokemonListCellFilter.append(model)
+                completion()
+                break
+            case .failure(_):
                 completion()
                 break
             }
         }
-        
     }
     
     func getNumberOfPokemons() -> Int {
-        guard let allPokemons = allPokemons else {
-            return 0
+        if isFilter {
+            return allPokemonListCellFilter.count
+        }else {
+            return allPokemonListCell.count
         }
-        
-        return allPokemons.pokemon_entries.count
     }
     
-    func getPokemonInfo(with row: Int) -> String{
-        guard let allPokemons = allPokemons else {
-            return "Empty List"
+    func getPokemonViewModel(with row : Int) -> PokemonCellViewModel {
+        if isFilter {
+            return allPokemonListCellFilter[row]
+        }else {
+            return allPokemonListCell[row]
         }
-        
-        let name = allPokemons.pokemon_entries[row].pokemon_species.name
-        let number = allPokemons.pokemon_entries[row].entry_number
-        
-        return "\(number)" + " - " + name
-        
     }
 }
 
-
+//MARK: - Private methods to create PokemonCellViewModel
+private extension PokedexViewModel {
+    func createPokemonViewModel(newResults: [PokemonResults], completion: @escaping ()-> Void) {
+        newResults.forEach { pokemonResults in
+            let model = PokemonCellViewModel(urlPokemon: pokemonResults.url, pokemon: nil)
+            allPokemonListCell.append(model)
+        }
+        
+        completion()
+    }
+    
+}

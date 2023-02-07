@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct PokedexOutputList : Codable {
+struct PokemonResults : Codable {
     let name: String
     let url: String
 }
 
-struct PokedexOutput : Codable {
+struct PokemonListOutput : Codable {
     let count : Int
     let next : String
     let previous : String?
-    let results : [PokedexOutputList]
+    let results : [PokemonResults]
 }

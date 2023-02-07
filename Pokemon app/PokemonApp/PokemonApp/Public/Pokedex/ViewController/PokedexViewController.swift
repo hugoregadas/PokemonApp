@@ -8,33 +8,20 @@
 import Foundation
 import UIKit
 
-class PokedexViewController: UIViewController {
+class PokedexViewController: UIViewController{
     //MARK: - Iboutlets
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchTextField: UITextField!
     
-    //MARK: - Private Atributs
-    private var viewModel: PokedexViewModel!
-    
-    //MARK: - Init ViewController
-    init?(viewModel: PokedexViewModel, coder: NSCoder) {
-        self.viewModel = viewModel
-        super.init(coder: coder)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    //MARK: - Private properties
+    private let viewModel = PokedexViewModel(serviceAPI: ServiceManager.shared)
     
     //MARK: - Cicle Life
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchTextField.delegate = self
+        fecthPokemonData()
         initUI()
-        viewModel.fetchPokedexInfo {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
     }
 }
 
@@ -45,6 +32,26 @@ private extension PokedexViewController {
         collectionView.delegate = self
         collectionView.register(UINib(nibName: "PokedexCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
         collectionView.dataSource = self
+        
+    }
+    
+    func fecthPokemonData(){
+        viewModel.fetchPokemonList { [self] in
+            reloadCollectionView()
+        }
+    }
+    
+    func fetchPokemonWith(name : String) {
+        viewModel.isFilter = true
+        viewModel.fetchPokemon(with: name) { [self] in
+           reloadCollectionView()
+        }
+    }
+    
+    func reloadCollectionView(){
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
 
@@ -56,10 +63,9 @@ extension PokedexViewController : UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! PokedexCollectionViewCell
-        cell.titleLabel.text = viewModel.getPokemonInfo(with: indexPath.row)
+        cell.configureViewModel(viewModel: viewModel.getPokemonViewModel(with: indexPath.row))
         return cell
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.frame.width - 40)/2, height: 100)
@@ -81,5 +87,23 @@ extension PokedexViewController : UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
-    
 }
+
+//MARK: - Search Bar delegate
+extension PokedexViewController : UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let name = textField.text {
+            if (name.count != 0) {
+                fetchPokemonWith(name: name)
+            }else{
+                viewModel.isFilter = false
+                reloadCollectionView()
+            }
+        }
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+

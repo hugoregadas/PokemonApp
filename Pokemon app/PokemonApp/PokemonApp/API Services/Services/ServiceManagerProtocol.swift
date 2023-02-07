@@ -9,5 +9,5 @@ import Foundation
 
 
 protocol ServiceManagerProtocol {
-    func fetchPokedex(completion: @escaping (Result< [PokedexOutputList] , Error>) -> (Void))
+    
 }
